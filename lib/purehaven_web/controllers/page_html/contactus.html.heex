@@ -1,0 +1,370 @@
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  rel="stylesheet"
+/>
+<!-- Header -->
+<header 
+  x-data="{ scrolled: false }"
+  x-init="window.addEventListener('scroll', () => scrolled = window.scrollY > 50)"
+  x-bind:class="scrolled ? 'bg-white shadow py-4' : 'bg-transparent py-6'"
+  class="fixed inset-x-0 top-0 z-50 transition-all duration-300"
+>
+  <nav class="flex items-center justify-between px-4 lg:px-8 transition-all duration-300" aria-label="Global">
+    <!-- Logo -->
+    <div class="flex">
+      <a href={~p"/home"} class="-m-1.5 p-1.5">
+        <span class="sr-only">Jedison Ltd</span>
+        <img class="h-10 w-auto transition-all duration-300" x-bind:class="scrolled ? 'h-12' : 'h-16'" src={~s(/images/jedisonlogo.png)} alt="Jedison Logo" />
+      </a>
+    </div>
+    
+   <!-- Desktop Nav -->
+<div class="hidden lg:flex flex-grow justify-center gap-x-8">
+  <a href={~p"/home"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+    <i class="fas fa-home"></i> Home
+  </a>
+
+  <!-- Products Dropdown -->
+  <div class="relative group">
+    <a href={~p"/products"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+      <i class="fas fa-box"></i> Products
+      <!-- Arrow Icon -->
+      <i class="fas fa-chevron-down text-xs transition-transform duration-300 group-hover:rotate-180"></i>
+    </a>
+    <!-- Dropdown Menu -->
+    <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 group-hover:opacity-100 group-hover:translate-y-1 transition duration-300 transform z-50">
+      <a href={~p"/products#purehaven"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">PureHaven</a>
+      <a href={~p"/products/new-products"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">New Products</a>
+      <a href={~p"/products/private-label"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Private/Custom Labelling</a>
+    </div>
+  </div>
+
+  <a href={~p"/aboutus"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+    <i class="fas fa-users"></i> About Us
+  </a>
+  <a href={~p"/contactus"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+    <i class="fas fa-envelope"></i> Contact Us
+  </a>
+  <a href={~p"/faqs"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+    <i class="fas fa-question-circle"></i> FAQs
+  </a>
+  <%!-- <a href={~p"/reviews"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+    <i class="fas fa-star"></i> Reviews
+  </a> --%>
+</div>
+
+    <!-- Mobile Menu Button -->
+    <button
+      id="menu-button"
+      phx-click={JS.show(to: "#mobile-menu")}
+      class="lg:hidden block text-gray-700 focus:outline-none"
+    >
+      <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      </svg>
+    </button>
+  </nav>
+</header>
+
+<!-- Mobile Sidebar Menu -->
+<div
+  id="mobile-menu"
+  class="hidden fixed inset-0 z-50 w-64 h-full bg-indigo-600 text-white transform transition-transform"
+>
+  <button
+    id="close-menu"
+    phx-click={JS.hide(to: "#mobile-menu")}
+    class="absolute top-4 right-4 text-white text-xl"
+  >
+    &times;
+  </button>
+  <ul class="mt-10 space-y-4 relative z-10"> <!-- Updated z-index for the main menu -->
+    <li>
+      <a href={~p"/home"} class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700">
+        <i class="fas fa-home"></i>
+        Home
+      </a>
+    </li>
+
+    <!-- Products Dropdown for Mobile -->
+    <li class="relative group">
+      <button class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700 w-full text-left">
+        <i class="fas fa-box"></i> Products
+        <i class="fas fa-chevron-right text-xs transition-transform duration-300 group-hover:rotate-90"></i>
+      </button>
+      <ul class="absolute top-0 right-0 w-48 bg-white rounded-md shadow-lg opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition duration-300 transform z-10"> <!-- Positioning to the right -->
+        <li>
+          <a href={~p"/products#purehaven"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">PureHaven</a>
+        </li>
+        <li>
+          <a href={~p"/products/new-products"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">New Products</a>
+        </li>
+        <li>
+          <a href={~p"/products/private-label"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Private/Custom Labelling</a>
+        </li>
+      </ul>
+    </li>
+
+    <li>
+      <a href={~p"/aboutus"} class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700">
+        <i class="fas fa-users"></i>
+        About Us
+      </a>
+    </li>
+    <li>
+      <a href={~p"/contactus"} class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700">
+        <i class="fas fa-envelope"></i>
+        Contact Us
+      </a>
+    </li>
+    <li>
+      <a href={~p"/faqs"} class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700">
+        <i class="fas fa-question-circle"></i>
+        FAQs
+      </a>
+    </li>
+    <%!-- <li>
+      <a href={~p"/reviews"} class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700">
+        <i class="fas fa-star"></i>
+        Reviews
+      </a>
+    </li> --%>
+  </ul>
+</div>
+
+
+<!-- Contact Us Section -->
+<section class="bg-gray-100 py-16">
+  <div class="max-w-6xl mx-auto px-6 mt-10">
+
+    <!-- Heading -->
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Get in Touch</h2>
+      <p class="text-gray-600 mt-2 text-lg">
+        We’d love to hear from you! Reach out with any questions or feedback.
+      </p>
+    </div>
+
+    <!-- 2-Column Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+
+      <!-- Send Message Form (Left) -->
+      <div class="bg-white p-8 rounded-lg shadow-lg">
+        <h3 class="text-2xl font-semibold text-gray-900 mb-6">Send us a message</h3>
+        <p class="text-gray-600 mb-6">Have questions? Feel free to contact us anytime.</p>
+
+        <.form :let={f} for={@contact_changeset} action={~p"/send_message"} class="space-y-6">
+          <.input field={f[:name]} type="text" label="Your Name" placeholder="Enter your name e.g John Doe"
+            class="w-full border-gray-300 rounded-md shadow-sm ring-1 ring-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+
+          <.input field={f[:email]} type="email" label="Your Email" placeholder="Enter your email"
+            class="w-full border-gray-300 rounded-md shadow-sm ring-1 ring-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+
+          <.input field={f[:message]} type="textarea" label="Your Message" placeholder="Write your message here..." rows="4"
+            class="w-full border-gray-300 rounded-md shadow-sm ring-1 ring-gray-200 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500" />
+
+          <button type="submit"
+            class="w-full bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2">
+            Send Message
+          </button>
+        </.form>
+      </div>
+
+      <!-- Contact Info & Google Maps (Right) -->
+      <div class="bg-white p-8 rounded-lg shadow-lg flex flex-col justify-between">
+        <div>
+          <h3 class="text-2xl font-semibold text-gray-900 mb-6">Contact Information</h3>
+          <p class="text-gray-600 mb-6">Have questions? Feel free to contact us anytime.</p>
+
+          <div class="space-y-5">
+            <div class="flex items-center space-x-4">
+              <i class="fa-solid fa-phone text-indigo-600 text-2xl"></i>
+              <span class="text-gray-700 text-lg">+254740 645 627</span>
+            </div>
+
+            <div class="flex items-center space-x-4">
+              <i class="fa-solid fa-envelope text-indigo-600 text-2xl"></i>
+              <span class="text-gray-700 text-lg">general@jedisoncompanyltd.com</span>
+            </div>
+
+            <div class="flex items-center space-x-4">
+              <i class="fa-solid fa-map-marker-alt text-indigo-600 text-2xl"></i>
+              <span class="text-gray-700 text-lg">P.O Box 11785-00400; Mavoko Business Park, Nairobi, Kenya</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Google Maps Embed -->
+        <div class="mt-6 rounded-lg overflow-hidden">
+          <iframe
+            class="w-full h-56 md:h-64 rounded-md"
+            frameborder="0"
+            scrolling="no"
+            marginheight="0"
+            marginwidth="0"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3988.5986195892497!2d36.94948717502538!3d-1.4167681357827606!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x182f0b8819f0e83b%3A0xf3cecaa46d53d977!2sJedison%20Company%20Limited!5e0!3m2!1sen!2ske!4v1744635439731!5m2!1sen!2ske"
+          ></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- Become a Distributor Form (Full Width Below) -->
+    <div class="max-w-6xl mx-auto mt-16">
+      <div class="bg-white p-8 rounded-lg shadow-lg w-full">
+        <h3 class="text-2xl font-semibold text-gray-900 mb-6 text-center">Become a Distributor</h3>
+        <p class="text-gray-600 mb-6 text-center">Have questions? Feel free to contact us anytime.</p>
+
+        <.form :let={f} for={@distributor_changeset} action={~p"/submit_distributor"} class="space-y-4">
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <.input field={f[:first_name]} type="text" label="First Name" placeholder="John" />
+            <.input field={f[:last_name]} type="text" label="Last Name" placeholder="Doe" />
+          </div>
+
+          <.input field={f[:company]} type="text" label="Company Name" placeholder="Company Ltd" />
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <.input field={f[:email]} type="email" label="Email" placeholder="email@example.com" />
+            <.input field={f[:phone]} type="tel" label="Phone Number" placeholder="+123456789" />
+            <.input field={f[:location]} type="text" label="Location" placeholder="City, Country" />
+          </div>
+          <.input field={f[:interests]} type="textarea" label="Product Interests" rows="2" placeholder="Which products are you interested in?" />
+          <.input field={f[:message]} type="textarea" label="Additional Message" rows="3" placeholder="Anything you'd like to add?" />
+
+          <button type="submit"
+            class="w-full bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-700">
+            Submit Distributor Request
+          </button>
+        </.form>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- Footer Section -->
+<footer class="w-full bg-white py-10 mt-auto">
+  <div class="max-w-6xl mx-auto px-6">
+    
+<!-- Newsletter Section -->
+<!-- Newsletter Section -->
+<div class="mb-12 pb-8 border-b border-gray-300 w-full mx-auto">
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+    
+    <!-- Left Content -->
+    <div class="md:w-1/2 text-left md:ml-4">
+      <h3 class="text-2xl font-bold text-gray-900">Want product news and updates?</h3>
+      <p class="text-gray-600 mt-2">Sign up for our newsletter.</p>
+    </div>
+
+    <!-- Right Content -->
+    <div class="md:w-1/2 flex justify-end md:mr-4">
+      <div class="w-full max-w-md space-y-3">
+        <!-- Newsletter form -->
+        <form
+          id="newsletter-form"
+          action={~p(/subscribe)}
+          method="post"
+          class="relative space-y-3"
+        >
+          <input type="hidden" name="_csrf_token" value={Phoenix.Controller.get_csrf_token()} />
+
+          <!-- First & Last Name Fields -->
+          <div class="flex space-x-3">
+            <input
+              type="text"
+              name="first_name"
+              placeholder="First name"
+              class="w-1/2 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+            <input
+              type="text"
+              name="last_name"
+              placeholder="Last name"
+              class="w-1/2 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          <!-- Email + Submit Button -->
+          <div class="flex space-x-3">
+            <input
+              type="email"
+              id="newsletter-email"
+              name="email"
+              placeholder="Enter your email"
+              class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+            <button
+              type="submit"
+              class="px-6 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 transition"
+            >
+              Subscribe
+            </button>
+          </div>
+
+          <!-- Message Box -->
+          <div
+            id="newsletter-message"
+            class="absolute top-full mt-2 hidden px-4 py-2 bg-green-100 border border-green-400 text-green-800 rounded shadow-lg w-full"
+          >
+            Your message here (e.g., Success! You have successfully subscribed.)
+          </div>
+        </form>
+
+        <!-- Privacy Policy Text -->
+        <p class="text-gray-500 text-sm mt-2">
+          We care about your data. Read our 
+          <a href="#" class="text-indigo-600 hover:underline">privacy policy</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+    
+<!-- Navigation Links -->
+    <nav class="mb-8">
+      <ul class="flex justify-center space-x-10 text-gray-600 text-sm">
+        <li><a href={~p(/home)} class="hover:underline">Home</a></li>
+        
+        <li><a href={~p(/products)} class="hover:underline">Products</a></li>
+        
+        <li><a href={~p(/aboutus)} class="hover:underline">About Us</a></li>
+        
+        <li><a href={~p(/contactus)} class="hover:underline">Contact Us</a></li>
+        
+        <li><a href={~p(/faqs)} class="hover:underline">FAQs</a></li>
+        
+        <%!-- <li><a href={~p(/reviews)} class="hover:underline">Reviews</a></li> --%>
+      </ul>
+    </nav>
+    
+<!-- Social Media Icons -->
+    <div class="flex justify-center space-x-10 mb-8 text-gray-600">
+      <a href="https://facebook.com" aria-label="Facebook" target="_blank" rel="noopener">
+        <i class="fa-brands fa-facebook text-3xl hover:text-blue-600 transition"></i>
+      </a>
+      
+      <a href="https://www.instagram.com/purehavenafrica?igsh=ZjVhdXNjZWQya2s1" aria-label="Instagram" target="_blank" rel="noopener">
+        <i class="fa-brands fa-instagram text-3xl hover:text-pink-600 transition"></i>
+      </a>
+      
+      <a href="https://whatsapp.com" aria-label="WhatsApp" target="_blank" rel="noopener">
+        <i class="fa-brands fa-whatsapp text-3xl hover:text-green-600 transition"></i>
+      </a>
+      
+      <%!-- <a href="https://twitter.com" aria-label="Twitter" target="_blank" rel="noopener">
+        <i class="fa-brands fa-x text-3xl hover:text-blue-400 transition"></i>
+      </a> --%>
+      
+      <a href="https://tiktok.com" aria-label="TikTok" target="_blank" rel="noopener">
+        <i class="fa-brands fa-tiktok text-3xl hover:text-black transition"></i>
+      </a>
+    </div>
+    
+<!-- Copyright -->
+    <p class="text-gray-500 text-sm text-center mt-12 mb-5">
+      &copy; 2025 Jedison Company, Ltd. All rights reserved.
+    </p>
+  </div>
+</footer>

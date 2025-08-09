@@ -1,0 +1,230 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+<div x-data="{ sidebarOpen: false, approveModal: false, selectedId: null }" class="min-h-screen bg-gray-100 flex">
+
+  <!-- Mobile Sidebar -->
+  <div x-show="sidebarOpen" class="fixed inset-0 flex z-40 md:hidden" x-transition>
+    <div class="fixed inset-0 bg-black opacity-50" @click="sidebarOpen = false"></div>
+    <div class="relative w-64 bg-white shadow-lg z-50">
+      <div class="p-6 border-b flex justify-center">
+        <img class="h-10" src={~s"/images/jedisonlogo.png"} alt="Jedison Logo" />
+      </div>
+      <nav class="mt-4 px-4 text-sm text-gray-700 space-y-2 font-medium">
+        <.link navigate={~p"/admin/dashboard"} class="block py-2 hover:bg-indigo-100 rounded">Dashboard</.link>
+        <.link navigate={~p"/admin/inputs"} class="block py-2 hover:bg-indigo-100 rounded">Inputs</.link>
+        <.link navigate={~p"/admin/distributors"} class="block py-2 bg-indigo-200 rounded font-semibold">Distributors</.link>
+        <.link navigate={~p"/admin/messages"} class="block py-2 hover:bg-indigo-100 rounded">Messages</.link>
+        <.link navigate={~p"/admin/reviews"} class="block py-2 hover:bg-indigo-100 rounded">Reviews</.link>
+        <.link navigate={~p"/admin/subscribers"} class="block py-2 hover:bg-indigo-100 rounded">Subscribers</.link>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Desktop Sidebar -->
+  <aside class="hidden md:flex flex-col w-64 bg-white shadow-lg min-h-screen justify-between">
+    <div>
+      <div class="p-6 border-b flex justify-center">
+        <img class="h-10" src={~s"/images/jedisonlogo.png"} alt="Jedison Logo" />
+      </div>
+      <nav class="mt-6 px-4 text-sm text-gray-700 space-y-2 font-medium">
+        <.link navigate={~p"/admin/dashboard"} class="flex items-center gap-2 px-3 py-2 hover:bg-indigo-100 rounded">
+          <i class="fas fa-tachometer-alt"></i> Dashboard
+        </.link>
+        <.link navigate={~p"/admin/inputs"} class="flex items-center gap-2 px-3 py-2 hover:bg-indigo-100 rounded">
+          <i class="fas fa-database"></i> Inputs
+        </.link>
+        <.link navigate={~p"/admin/distributors"} class="flex items-center gap-2 px-3 py-2 bg-indigo-200 rounded font-semibold">
+          <i class="fas fa-truck"></i> Distributors
+        </.link>
+        <.link navigate={~p"/admin/reviews"} class="flex items-center gap-2 px-3 py-2 hover:bg-indigo-100 rounded">
+          <i class="fas fa-star"></i> Reviews
+        </.link>
+        <.link navigate={~p"/admin/messages"} class="flex items-center gap-2 px-3 py-2 hover:bg-indigo-100 rounded">
+          <i class="fas fa-envelope"></i> Messages
+        </.link>
+        <.link navigate={~p"/admin/subscribers"} class="flex items-center gap-2 px-3 py-2 hover:bg-indigo-100 rounded">
+          <i class="fas fa-users"></i> Subscribers
+        </.link>
+         <.link navigate={~p"/admin/newsletter/send"} class="flex items-center gap-2 px-3 py-2 hover:bg-indigo-100 rounded">
+          <i class="fas fa-paper-plane"></i> Mass Email
+        </.link>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 flex flex-col">
+
+    <!-- Topbar -->
+    <header class="w-full bg-white border-b shadow-sm px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="p-2 bg-green-100 text-green-600 rounded-full">
+          <i class="fas fa-truck"></i>
+        </div>
+        <h1 class="text-xl sm:text-2xl font-bold text-gray-800 tracking-tight">
+          Distributors Management
+        </h1>
+      </div>
+
+      <div class="flex items-center gap-4 relative">
+        <button class="relative text-gray-600 hover:text-green-600 transition">
+          <i class="fas fa-bell text-xl"></i>
+          <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full animate-ping"></span>
+          <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+        </button>
+
+       <div id="profile-dropdown" phx-click-away="close_dropdown" class="relative">
+
+  <!-- Toggle Button -->
+  <button phx-click="toggle_dropdown" class="flex items-center space-x-2 bg-gray-100 p-2 rounded-md hover:bg-gray-200 transition">
+    <i class="fas fa-user-circle text-gray-700 text-xl"></i>
+    <span class="text-sm font-medium text-gray-700 hidden sm:inline">
+      <%= @current_admin.email %>
+    </span>
+    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+    </svg>
+  </button>
+
+  <!-- Dropdown Menu -->
+  <%= if @show_dropdown do %>
+    <div class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+      <.link href={~p"/admins/settings"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+        <i class="fas fa-cog mr-2"></i> Settings
+      </.link>
+      <.link href={~p"/admins/log_out"} method="delete" data-confirm="Are you sure you want to log out?" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+        <i class="fas fa-sign-out-alt mr-2"></i> Log out
+      </.link>
+    </div>
+  <% end %>
+</div>
+
+        <button class="md:hidden text-gray-700" @click="sidebarOpen = true" aria-label="Open menu">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Flash Message -->
+    <%= if @flash["info"] do %>
+      <div class="bg-green-100 text-green-700 px-6 py-3 rounded shadow-md m-4">
+        <%= @flash["info"] %>
+      </div>
+    <% end %>
+
+    <!-- Content Area -->
+    <section class="p-6 space-y-6">
+
+      <!-- Top Actions -->
+<!-- Container Box -->
+<div class="bg-white shadow-md rounded-xl ring-1 ring-gray-200 overflow-x-auto p-4 mb-6">
+
+  <!-- Search Form -->
+  <form phx-change="search" phx-debounce="300" class="w-full mb-0">
+    <input
+      type="text"
+      name="query"
+      value={@search || ""}
+      placeholder="Search distributors by name or email..."
+      class="border px-4 py-2 rounded w-full focus:ring-green-500 focus:border-green-500"
+    />
+  </form>
+
+  <!-- (Optional) Distributor Table or List goes here -->
+
+</div>
+  <%!-- <div>
+    <button 
+      phx-click="export" 
+      class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md"
+    >
+      Export CSV
+    </button>
+  </div> --%>
+<%!-- </div> --%>
+
+      <!-- Distributors Table -->
+      <div class="bg-white rounded shadow overflow-x-auto">
+        <table class="w-full table-auto">
+          <thead class="bg-gray-200">
+            <tr>
+              <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600">Name</th>
+              <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600">Company</th>
+              <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600">Email</th>
+              <th class="px-6 py-3 text-left text-sm font-semibold text-gray-600">Phone</th>
+              <th class="px-6 py-3 text-center text-sm font-semibold text-gray-600">Status</th>
+              <th class="px-6 py-3 text-center text-sm font-semibold text-gray-600">Actions</th>
+            </tr>
+          </thead>
+         <tbody class="text-sm text-gray-700">
+  <%= for distributor <- @distributors.entries do %>
+    <tr class="border-b hover:bg-gray-50">
+      <td class="px-6 py-4"><%= distributor.first_name %> <%= distributor.last_name %></td>
+      <td class="px-6 py-4"><%= distributor.company %></td>
+      <td class="px-6 py-4"><%= distributor.email %></td>
+      <td class="px-6 py-4"><%= distributor.phone %></td>
+      <td class="px-6 py-4 text-center">
+        <span class={"px-3 py-1 rounded-full text-xs font-medium " <>
+          if distributor.status == "Approved", do: "bg-green-100 text-green-800", else: "bg-yellow-100 text-yellow-800"}>
+          <%= distributor.status || "Pending" %>
+        </span>
+      </td>
+      <td class="px-6 py-4 text-center">
+        <div class="flex items-center justify-center gap-2">
+          <%= if distributor.status != "Approved" do %>
+            <button 
+              phx-click="approve" 
+              phx-value-id={distributor.id}
+              data-confirm="Are you sure you want to approve this distributor?"
+              class="bg-indigo-500 hover:bg-indigo-600 text-white px-3 py-1 rounded text-xs">
+              Approve
+            </button>
+          <% end %>
+
+          <button 
+            phx-click="delete" 
+            phx-value-id={distributor.id}
+            data-confirm="Are you sure you wat to delete this distributor?"
+            class="inline-flex items-center gap-1 bg-red-600 hover:bg-red-700 text-white text-xs font-medium px-3 py-1 rounded shadow transition">
+            <i class="fas fa-trash-alt"></i> Delete
+          </button>
+        </div>
+      </td>
+    </tr>
+  <% end %>
+</tbody>
+        </table>
+      </div>
+
+      <!-- Pagination -->
+      <div class="flex justify-center space-x-2 mt-6">
+  <%= if @distributors.page_number > 1 do %>
+    <button
+      phx-click="paginate"
+      phx-value-page={@distributors.page_number - 1}
+      class="px-3 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded"
+    >
+      Previous
+    </button>
+  <% end %>
+
+  <span class="px-4 py-2 text-gray-600 text-sm">
+    Page <%= @distributors.page_number %> of <%= @distributors.total_pages %>
+  </span>
+
+  <%= if @distributors.page_number < @distributors.total_pages do %>
+    <button
+      phx-click="paginate"
+      phx-value-page={@distributors.page_number + 1}
+      class="px-3 py-2 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded"
+    >
+      Next
+    </button>
+  <% end %>
+</div>
+
+    </section>
+
+  </main>
+  </div>

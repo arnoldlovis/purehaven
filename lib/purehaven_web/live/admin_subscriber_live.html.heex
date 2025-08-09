@@ -1,0 +1,175 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+<div x-data="{ sidebarOpen: false }" class="min-h-screen bg-gray-100 flex">
+
+  <!-- Mobile Sidebar -->
+  <div x-show="sidebarOpen" class="fixed inset-0 z-40 flex md:hidden" x-transition>
+    <div class="fixed inset-0 bg-black opacity-50" @click="sidebarOpen = false"></div>
+    <div class="relative w-64 bg-white shadow-lg z-50">
+      <div class="p-6 border-b flex justify-center">
+        <img class="h-10" src={~s"/images/jedisonlogo.png"} alt="Jedison Logo" />
+      </div>
+      <nav class="mt-4 px-4 text-sm text-gray-700 space-y-2 font-medium">
+        <.link navigate={~p"/admin/dashboard"} class="block py-2 hover:bg-indigo-100 rounded">Dashboard</.link>
+        <.link navigate={~p"/admin/reviews"} class="block py-2 hover:bg-indigo-100 rounded">Reviews</.link>
+        <.link navigate={~p"/admin/messages"} class="block py-2 hover:bg-indigo-100 rounded">Messages</.link>
+        <.link navigate={~p"/admin/subscribers"} class="block py-2 bg-indigo-200 rounded font-semibold">Subscribers</.link>
+        <.link navigate={~p"/admin/newsletter/send"} class="block py-2 hover:bg-indigo-100 rounded">Mass Email</.link>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Desktop Sidebar -->
+  <aside class="hidden md:flex flex-col w-64 bg-white shadow-lg min-h-screen justify-between">
+    <div>
+      <div class="p-6 border-b flex justify-center">
+        <img class="h-10" src={~s"/images/jedisonlogo.png"} alt="Jedison Logo" />
+      </div>
+      <nav class="mt-6 px-4 text-sm text-gray-700 space-y-2 font-medium">
+        <.link navigate={~p"/admin/dashboard"} class="flex items-center gap-2 px-3 py-2 hover:bg-indigo-100 rounded">
+          <i class="fas fa-tachometer-alt"></i> Dashboard
+        </.link>
+        <.link navigate={~p"/admin/inputs"} class="flex items-center gap-2 px-3 py-2 hover:bg-indigo-100 rounded">
+          <i class="fas fa-database"></i> Inputs
+        </.link>
+        <.link navigate={~p"/admin/distributors"} class="flex items-center gap-2 px-3 py-2 hover:bg-indigo-100 rounded">
+          <i class="fas fa-truck"></i> Distributors
+        </.link>
+        <.link navigate={~p"/admin/reviews"} class="flex items-center gap-2 px-3 py-2 hover:bg-indigo-100 rounded">
+          <i class="fas fa-star"></i> Reviews
+        </.link>
+        <.link navigate={~p"/admin/messages"} class="flex items-center gap-2 px-3 py-2 hover:bg-indigo-100 rounded">
+          <i class="fas fa-envelope"></i> Messages
+        </.link>
+        <.link navigate={~p"/admin/subscribers"} class="flex items-center gap-2 px-3 py-2 bg-indigo-200 rounded font-semibold">
+          <i class="fas fa-users"></i> Subscribers
+        </.link>
+        <.link navigate={~p"/admin/newsletter/send"} class="flex items-center gap-2 px-3 py-2 hover:bg-indigo-100 rounded">
+          <i class="fas fa-paper-plane"></i> Mass Email
+        </.link>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="flex-1 flex flex-col">
+
+    <!-- Topbar -->
+    <header class="bg-white border-b shadow-sm px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="p-2 bg-green-100 rounded-full text-green-600">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M16 14H8v-1a4 4 0 018 0v1zM12 14v1m0 0v1m0-6a4 4 0 00-8 0v1h8v-1z"/>
+          </svg>
+        </div>
+        <h1 class="text-xl sm:text-2xl font-bold text-gray-800 tracking-tight">Newsletter Subscribers</h1>
+      </div>
+
+      <div class="flex items-center gap-4">
+        <!-- Notifications -->
+        <button class="relative text-gray-600 hover:text-purple-600 transition" aria-label="Notifications">
+          <i class="fas fa-bell text-xl"></i>
+          <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full animate-ping"></span>
+          <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+        </button>
+
+        <div id="profile-dropdown" phx-click-away="close_dropdown" class="relative">
+
+  <!-- Toggle Button -->
+  <button phx-click="toggle_dropdown" class="flex items-center space-x-2 bg-gray-100 p-2 rounded-md hover:bg-gray-200 transition">
+    <i class="fas fa-user-circle text-gray-700 text-xl"></i>
+    <span class="text-sm font-medium text-gray-700 hidden sm:inline">
+      <%= @current_admin.email %>
+    </span>
+    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+    </svg>
+  </button>
+
+  <!-- Dropdown Menu -->
+  <%= if @show_dropdown do %>
+    <div class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+      <.link href={~p"/admins/settings"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+        <i class="fas fa-cog mr-2"></i> Settings
+      </.link>
+      <.link href={~p"/admins/log_out"} method="delete" data-confirm="Are you sure you want to log out?" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+        <i class="fas fa-sign-out-alt mr-2"></i> Log out
+      </.link>
+    </div>
+  <% end %>
+</div>
+
+        <!-- Mobile Menu Button -->
+        <button class="md:hidden text-gray-700" @click="sidebarOpen = true" aria-label="Open menu">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Content Area -->
+    <main class="p-6">
+      <div class="bg-white shadow-md rounded-xl ring-1 ring-gray-200 overflow-x-auto">
+
+        <!-- Filter/Search -->
+        <div class="flex flex-col sm:flex-row justify-between items-center gap-4 p-4 border-b">
+          <form phx-change="search" phx-debounce="300" class="w-full mb-0">
+            <input name="search" value={@search} placeholder="Search by email..." class="w-full px-4 py-2 border rounded focus:outline-none focus:ring" />
+          </form>
+        </div>
+
+        <!-- Table -->
+        <table class="min-w-full divide-y divide-gray-200 text-sm">
+          <thead class="bg-gray-100 text-gray-600 font-semibold uppercase">
+            <tr>
+              <th class="px-6 py-3 text-left">First Name</th>
+              <th class="px-6 py-3 text-left">Email</th>
+              <th class="px-6 py-3 text-left">Date Subscribed</th>
+              <th class="px-6 py-3 text-right">Actions</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100 text-gray-800">
+            <%= for subscriber <- @subscribers do %>
+              <tr class="hover:bg-gray-50">
+                <td class="px-6 py-4"><%= subscriber.first_name %></td>
+                <td class="px-6 py-4"><%= subscriber.email %></td>
+                <td class="px-6 py-4 text-sm text-gray-500">
+                  <%= Timex.format!(subscriber.inserted_at, "{YYYY}-{0M}-{0D}") %>
+                </td>
+                <td class="px-6 py-4 text-right">
+                  <button
+                    phx-click="delete"
+                    phx-value-id={subscriber.id}
+                    data-confirm="Are you sure you want to delete this subscriber?"
+                    class="inline-flex items-center gap-1 bg-red-600 hover:bg-red-700 text-white text-xs font-medium px-3 py-1.5 rounded shadow transition"
+                  >
+                    <i class="fas fa-trash-alt"></i> Delete
+                  </button>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+       </div> 
+       <!-- Pagination Buttons -->
+      <div class="flex justify-center items-center gap-4 mt-6">
+        <button
+          phx-click="prev_page"
+          class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50"
+          disabled={@page <= 1}
+        >
+          Previous
+        </button>
+        <span class="text-sm text-gray-600">Page <%= @page %> of <%= @total_pages %></span>
+        <button
+          phx-click="next_page"
+          class="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 disabled:opacity-50"
+          disabled={@page >= @total_pages}
+        >
+          Next
+        </button>
+      </div>
+    </main>
+  </div>
+</div>

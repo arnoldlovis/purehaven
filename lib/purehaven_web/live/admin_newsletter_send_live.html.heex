@@ -1,0 +1,136 @@
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+<div x-data="{ sidebarOpen: false }" class="min-h-screen bg-gray-100 flex">
+  <!-- Mobile Sidebar -->
+  <div x-show="sidebarOpen" class="fixed inset-0 z-40 flex md:hidden" x-transition>
+    <div class="fixed inset-0 bg-black opacity-50" @click="sidebarOpen = false"></div>
+    <div class="relative w-64 bg-white shadow-lg z-50">
+      <div class="p-6 border-b flex justify-center">
+        <img class="h-10" src={~s"/images/jedisonlogo.png"} alt="Jedison Logo" />
+      </div>
+      <nav class="mt-4 px-4 text-sm text-gray-700 space-y-2 font-medium">
+        <.link navigate={~p"/admin/dashboard"} class="block py-2 hover:bg-indigo-100 rounded">Dashboard</.link>
+        <.link navigate={~p"/admin/reviews"} class="block py-2 hover:bg-indigo-100 rounded">Reviews</.link>
+        <.link navigate={~p"/admin/messages"} class="block py-2 hover:bg-indigo-100 rounded">Messages</.link>
+        <.link navigate={~p"/admin/subscribers"} class="block py-2 hover:bg-indigo-100 rounded">Subscribers</.link>
+        <.link navigate={~p"/admin/newsletter/send"} class="block py-2 bg-indigo-200 rounded font-semibold">Mass Email</.link>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Desktop Sidebar -->
+  <aside class="hidden md:flex flex-col w-64 bg-white shadow-lg min-h-screen justify-between">
+    <div>
+      <div class="p-6 border-b flex justify-center">
+        <img class="h-10" src={~s"/images/jedisonlogo.png"} alt="Jedison Logo" />
+      </div>
+      <nav class="mt-6 px-4 text-sm text-gray-700 space-y-2 font-medium">
+        <.link navigate={~p"/admin/dashboard"} class="flex items-center gap-2 px-3 py-2 hover:bg-indigo-100 rounded">
+          <i class="fas fa-tachometer-alt"></i> Dashboard
+        </.link>
+        <.link navigate={~p"/admin/inputs"} class="flex items-center gap-2 px-3 py-2 hover:bg-indigo-100 rounded">
+          <i class="fas fa-database"></i> Inputs
+        </.link>
+         <.link navigate={~p"/admin/distributors"} class="flex items-center gap-2 px-3 py-2 hover:bg-indigo-100 rounded">
+          <i class="fas fa-truck"></i> Distributors
+        </.link>
+        <.link navigate={~p"/admin/reviews"} class="flex items-center gap-2 px-3 py-2 hover:bg-indigo-100 rounded">
+          <i class="fas fa-star"></i> Reviews
+        </.link>
+        <.link navigate={~p"/admin/messages"} class="flex items-center gap-2 px-3 py-2 hover:bg-indigo-100 rounded">
+          <i class="fas fa-envelope"></i> Messages
+        </.link>
+        <.link navigate={~p"/admin/subscribers"} class="flex items-center gap-2 px-3 py-2 hover:bg-indigo-100 rounded">
+          <i class="fas fa-users"></i> Subscribers
+        </.link>
+        <.link navigate={~p"/admin/newsletter/send"} class="flex items-center gap-2 px-3 py-2 bg-indigo-200 rounded font-semibold">
+          <i class="fas fa-paper-plane"></i> Mass Email
+        </.link>
+      </nav>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col">
+    <!-- Topbar -->
+    <header class="w-full bg-white border-b shadow-sm px-6 py-4 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="p-2 bg-blue-100 rounded-full text-blue-600">
+          <i class="fas fa-paper-plane"></i>
+        </div>
+        <h1 class="text-xl sm:text-2xl font-bold text-gray-800 tracking-tight">
+          Mass Mailing
+        </h1>
+      </div>
+
+      <!-- Profile/Notifications/Sidebar toggle -->
+      <div class="flex items-center gap-4 relative">
+        <button class="relative text-gray-600 hover:text-purple-600 transition" aria-label="Notifications">
+          <i class="fas fa-bell text-xl"></i>
+          <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full animate-ping"></span>
+          <span class="absolute top-0 right-0 w-2 h-2 bg-red-500 rounded-full"></span>
+        </button>
+
+        <!-- Profile Dropdown -->
+        <div x-data="{ open: false }" class="relative">
+          <button @click="open = !open" class="flex items-center gap-2 bg-gray-100 p-2 rounded-md hover:bg-gray-200">
+            <i class="fas fa-user-circle text-xl text-gray-700"></i>
+            <span class="text-sm hidden sm:inline text-gray-700"><%= @current_admin.email %></span>
+            <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+
+          <div x-show="open" @click.away="open = false" class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+            <.link href={~p"/admins/settings"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+              <i class="fas fa-cog mr-2"></i> Settings
+            </.link>
+            <.link href={~p"/admins/log_out"} method="delete" data-confirm="Are you sure you want to log out?" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+              <i class="fas fa-sign-out-alt mr-2"></i> Log out
+            </.link>
+          </div>
+        </div>
+
+        <!-- Mobile Sidebar Button -->
+        <button class="md:hidden text-gray-700" @click="sidebarOpen = true" aria-label="Open sidebar">
+          <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Inner Page Content -->
+    <main class="flex-1 overflow-y-auto p-6">
+
+      <!-- Page Header -->
+      <section class="px-6 py-8 max-w-4xl mx-auto bg-white border rounded">
+        <header class="flex items-center justify-between mb-6">
+          <h1 class="text-2xl font-bold text-gray-800">Send Mass Email</h1>
+        </header>
+
+        <!-- Email Form -->
+        <form phx-submit="send_email" class="space-y-6">
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-700">Subject</label>
+            <input name="mass_email[subject]" type="text" placeholder="Subject" required class="w-full border rounded px-3 py-2" />
+          </div>
+
+          <div>
+            <label class="block mb-2 text-sm font-medium text-gray-700">Body</label>
+            <textarea name="mass_email[body]" rows="6" placeholder="Body of your email..." required class="w-full border rounded px-3 py-2"></textarea>
+          </div>
+
+          <div class="flex justify-end">
+            <button type="submit" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-md">
+              Send Email
+            </button>
+          </div>
+        </form>
+      </section>
+
+    </main>
+
+  </div>
+
+</div>

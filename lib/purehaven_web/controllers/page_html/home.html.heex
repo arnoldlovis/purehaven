@@ -1,0 +1,378 @@
+<.flash_group flash={@flash} />
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  rel="stylesheet"
+/>
+<!-- Header -->
+<!-- Header -->
+<header class="fixed inset-x-0 top-0 z-50 bg-white shadow py-4 transition-all duration-300">
+
+  <nav class="flex items-center justify-between px-4 lg:px-8 transition-all duration-300" aria-label="Global">
+    <!-- Logo -->
+    <div class="flex">
+      <a href={~p"/home"} class="-m-1.5 p-1.5">
+        <span class="sr-only">Jedison Ltd</span>
+        <img class="h-10 w-auto transition-all duration-300" x-bind:class="scrolled ? 'h-12' : 'h-16'" src={~s(/images/jedisonlogo.png)} alt="Jedison Logo" />
+      </a>
+    </div>
+
+   <!-- Desktop Nav -->
+<div class="hidden lg:flex flex-grow justify-center gap-x-8">
+  <a href={~p"/home"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+    <i class="fas fa-home"></i> Home
+  </a>
+
+  <!-- Products Dropdown -->
+  <div class="relative group">
+    <a href={~p"/products"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+      <i class="fas fa-box"></i> Products
+      <!-- Arrow Icon -->
+      <i class="fas fa-chevron-down text-xs transition-transform duration-300 group-hover:rotate-180"></i>
+    </a>
+    <!-- Dropdown Menu -->
+    <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 group-hover:opacity-100 group-hover:translate-y-1 transition duration-300 transform z-50">
+      <a href={~p"/products#purehaven"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">PureHaven</a>
+      <a href={~p"/products/new-products"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">New Products</a>
+      <a href={~p"/products/private-label"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Private/Custom Labelling</a>
+    </div>
+  </div>
+
+  <a href={~p"/aboutus"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+    <i class="fas fa-users"></i> About Us
+  </a>
+  <a href={~p"/contactus"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+    <i class="fas fa-envelope"></i> Contact Us
+  </a>
+  <a href={~p"/faqs"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+    <i class="fas fa-question-circle"></i> FAQs
+  </a>
+  <%!-- <a href={~p"/reviews"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+    <i class="fas fa-star"></i> Reviews
+  </a> --%>
+</div>
+
+    <!-- Mobile Menu Button -->
+    <button
+      id="menu-button"
+      phx-click={JS.show(to: "#mobile-menu")}
+      class="lg:hidden block text-gray-700 focus:outline-none"
+    >
+      <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      </svg>
+    </button>
+  </nav>
+</header>
+
+<!-- Mobile Sidebar Menu -->
+<div
+  id="mobile-menu"
+  class="hidden fixed inset-0 z-50 w-64 h-full bg-indigo-600 text-white transform transition-transform"
+>
+  <button
+    id="close-menu"
+    phx-click={JS.hide(to: "#mobile-menu")}
+    class="absolute top-4 right-4 text-white text-xl"
+  >
+    &times;
+  </button>
+  <ul class="mt-10 space-y-4 relative z-10"> <!-- Updated z-index for the main menu -->
+    <li>
+      <a href={~p"/home"} class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700">
+        <i class="fas fa-home"></i>
+        Home
+      </a>
+    </li>
+
+    <!-- Products Dropdown for Mobile -->
+    <li class="relative group">
+      <button class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700 w-full text-left">
+        <i class="fas fa-box"></i> Products
+        <i class="fas fa-chevron-right text-xs transition-transform duration-300 group-hover:rotate-90"></i>
+      </button>
+      <ul class="absolute top-0 right-0 w-48 bg-white rounded-md shadow-lg opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition duration-300 transform z-10"> <!-- Positioning to the right -->
+        <li>
+          <a href={~p"/products#purehaven"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">PureHaven</a>
+        </li>
+        <li>
+          <a href={~p"/products/new-products"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">New Products</a>
+        </li>
+        <li>
+          <a href={~p"/products/private-label"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Private/Custom Labelling</a>
+        </li>
+      </ul>
+    </li>
+
+    <li>
+      <a href={~p"/aboutus"} class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700">
+        <i class="fas fa-users"></i>
+        About Us
+      </a>
+    </li>
+    <li>
+      <a href={~p"/contactus"} class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700">
+        <i class="fas fa-envelope"></i>
+        Contact Us
+      </a>
+    </li>
+    <li>
+      <a href={~p"/faqs"} class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700">
+        <i class="fas fa-question-circle"></i>
+        FAQs
+      </a>
+    </li>
+    <%!-- <li>
+      <a href={~p"/reviews"} class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700">
+        <i class="fas fa-star"></i>
+        Reviews
+      </a>
+    </li> --%>
+  </ul>
+</div>
+
+<section class="mt-10 w-full relative bg-gray-100">
+ <div x-data="carousel()" class="relative w-full aspect-[16/9] overflow-hidden sm:h-[670px]">
+
+  <!-- Indicators -->
+  <div class="absolute bottom-5 left-1/2 z-10 flex -translate-x-1/2 space-x-3">
+    <template x-for="(img, index) in images" x-bind:key="index">
+      <button
+        class="w-3 h-3 rounded-full"
+        x-bind:class="current === index ? 'bg-white' : 'bg-gray-400'"
+        @click="goTo(index)"
+      ></button>
+    </template>
+  </div>
+
+  <!-- Slides -->
+  <div class="relative h-full w-full">
+    <template x-for="(img, index) in images" x-bind:key="index">
+      <div
+        x-show="current === index"
+        x-transition:enter="transition-opacity duration-700"
+        x-transition:enter-start="opacity-0"
+        x-transition:enter-end="opacity-100"
+        class="absolute inset-0"
+      >
+        <img x-bind:src="img.src" x-bind:alt="img.alt" class="object-cover w-full h-full" />
+
+      </div>
+    </template>
+  </div>
+
+  <!-- Prev/Next Controls -->
+  <button @click="prev" class="absolute top-1/2 left-5 -translate-y-1/2 bg-black/40 hover:bg-black/60 p-2 rounded-full text-white">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+    </svg>
+  </button>
+  <button @click="next" class="absolute top-1/2 right-5 -translate-y-1/2 bg-black/40 hover:bg-black/60 p-2 rounded-full text-white">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+    </svg>
+  </button>
+</div>
+
+<script>
+  function carousel() {
+    return {
+      current: 0,
+      images: [
+        { src: "/images/carouselBannner5.png", alt: "First slide" },
+        { src: "/images/jedisoncarousel3.jpg", alt: "Second slide" },
+        { src: "/images/carouselBanner22.png", alt: "Third slide" }
+      ],
+      goTo(index) {
+        this.current = index;
+      },
+      next() {
+        this.current = (this.current + 1) % this.images.length;
+      },
+      prev() {
+        this.current = (this.current - 1 + this.images.length) % this.images.length;
+      },
+      init() {
+        setInterval(() => {
+          this.next();
+        }, 5000); // auto slide every 5s
+      }
+    }
+  }
+</script>
+
+  <!-- Hygiene & Household Essentials Section -->
+  <div class="max-w-full relative bg-gray-100 pb-20">
+    <div class="max-w-full mx-auto px-6 text-center mt-10">
+      <h1 class="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+        Elevate Your Hygiene Standards with Premium Essentials
+      </h1>
+      <p class="text-gray-600 mt-4 text-lg">
+        Experience top-tier hygiene with our carefully crafted products, designed to bring
+        <strong>comfort, convenience, and cleanliness</strong>
+        to every household and business.
+      </p>
+      
+
+<!-- Product Highlights -->
+<div class="mt-8 grid grid-cols-2 md:grid-cols-4 gap-4">
+  <!-- Product 1 -->
+  <div class="bg-white rounded-lg shadow-md overflow-hidden h-64 flex flex-col items-center justify-center p-4">
+    <img src="/images/Jedison4rolls.png" alt="Premium Toilet Rolls" class="h-40 object-contain mb-2">
+    <p class="text-sm font-semibold text-gray-800 text-center">Premium Toilet Rolls</p>
+  </div>
+
+  <!-- Product 2 -->
+  <div class="bg-white rounded-lg shadow-md overflow-hidden h-64 flex flex-col items-center justify-center p-4">
+    <img src="/images/Jedisonserviettes.png" alt="Super Soft Serviettes" class="h-40 object-contain mb-2">
+    <p class="text-sm font-semibold text-gray-800 text-center">Serviettes</p>
+  </div>
+
+  <!-- Product 3 -->
+  <div class="bg-white rounded-lg shadow-md overflow-hidden h-64 flex flex-col items-center justify-center p-4">
+    <img src="/images/KitchenTowel2pack.png" alt="Kitchen Towels" class="h-40 object-contain mb-2">
+    <p class="text-sm font-semibold text-gray-800 text-center">Kitchen Towels</p>
+  </div>
+
+  <!-- Product 4 -->
+  <div class="bg-white rounded-lg shadow-md overflow-hidden h-64 flex flex-col items-center justify-center p-4">
+    <img src="/images/jedisonwetwipes.png" alt="Wet Wipes" class="h-40 object-contain mb-2">
+    <p class="text-sm font-semibold text-gray-800 text-center">Wet Wipes</p>
+  </div>
+</div>
+
+      
+<!-- Call to Action -->
+      <div class="mt-10">
+        <a
+          href={~p(/products)}
+          class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 px-6 rounded-lg text-lg transition duration-300"
+        >
+          Explore Our Products
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="w-full">
+    <img src={~s(/images/JedArtboard.png)} alt="Artboard Image" class="w-full   shadow-lg" />
+  </div>
+</section>
+
+<!-- Footer Section -->
+<footer class="w-full bg-white py-10 mt-auto">
+  <div class="max-w-6xl mx-auto px-6">
+    
+<!-- Newsletter Section -->
+<!-- Newsletter Section -->
+<div class="mb-12 pb-8 border-b border-gray-300 w-full mx-auto">
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+    
+    <!-- Left Content -->
+    <div class="md:w-1/2 text-left md:ml-4">
+      <h3 class="text-2xl font-bold text-gray-900">Want product news and updates?</h3>
+      <p class="text-gray-600 mt-2">Sign up for our newsletter.</p>
+    </div>
+
+    <!-- Right Content -->
+    <div class="md:w-1/2 flex justify-end md:mr-4">
+      <div class="w-full max-w-md space-y-3">
+        <!-- Newsletter form -->
+        <form
+          id="newsletter-form"
+          action={~p(/subscribe)}
+          method="post"
+          class="relative space-y-3"
+        >
+          <input type="hidden" name="_csrf_token" value={Phoenix.Controller.get_csrf_token()} />
+
+          <!-- First & Last Name Fields -->
+          <div class="flex space-x-3">
+            <input
+              type="text"
+              name="first_name"
+              placeholder="First name"
+              class="w-1/2 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+            <input
+              type="text"
+              name="last_name"
+              placeholder="Last name"
+              class="w-1/2 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          <!-- Email + Submit Button -->
+          <div class="flex space-x-3">
+            <input
+              type="email"
+              id="newsletter-email"
+              name="email"
+              placeholder="Enter your email"
+              class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+            <button
+              type="submit"
+              class="px-6 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 transition"
+            >
+              Subscribe
+            </button>
+          </div>
+
+          <!-- Message Box -->
+          <div
+            id="newsletter-message"
+            class="absolute top-full mt-2 hidden px-4 py-2 bg-green-100 border border-green-400 text-green-800 rounded shadow-lg w-full"
+          >
+            Your message here (e.g., Success! You have successfully subscribed.)
+          </div>
+        </form>
+
+        <!-- Privacy Policy Text -->
+        <p class="text-gray-500 text-sm mt-2">
+          We care about your data. Read our 
+          <a href="#" class="text-indigo-600 hover:underline">privacy policy</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Navigation Links -->
+    <nav class="mb-8">
+      <ul class="flex justify-center space-x-10 text-gray-600 text-sm">
+        <li><a href={~p(/home)} class="hover:underline">Home</a></li>
+        <li><a href={~p(/products)} class="hover:underline">Products</a></li>
+        <li><a href={~p(/aboutus)} class="hover:underline">About Us</a></li>
+        <li><a href={~p(/contactus)} class="hover:underline">Contact Us</a></li>
+        <li><a href={~p(/faqs)} class="hover:underline">FAQs</a></li>
+        <%!-- <li><a href={~p(/reviews)} class="hover:underline">Reviews</a></li> --%>
+      </ul>
+    </nav>
+    
+<!-- Social Media Icons -->
+    <div class="flex justify-center space-x-10 mb-8 text-gray-600">
+      <a href="https://facebook.com" aria-label="Facebook" target="_blank" rel="noopener">
+        <i class="fa-brands fa-facebook text-3xl hover:text-blue-600 transition"></i>
+      </a>
+      <a href="https://www.instagram.com/purehavenafrica?igsh=ZjVhdXNjZWQya2s1" aria-label="Instagram" target="_blank" rel="noopener">
+        <i class="fa-brands fa-instagram text-3xl hover:text-pink-600 transition"></i>
+      </a>
+      <a href="https://whatsapp.com" aria-label="WhatsApp" target="_blank" rel="noopener">
+        <i class="fa-brands fa-whatsapp text-3xl hover:text-green-600 transition"></i>
+      </a>
+      <%!-- <a href="https://twitter.com" aria-label="Twitter" target="_blank" rel="noopener">
+        <i class="fa-brands fa-x text-3xl hover:text-blue-400 transition"></i>
+      </a> --%>
+      <a href="https://tiktok.com" aria-label="TikTok" target="_blank" rel="noopener">
+        <i class="fa-brands fa-tiktok text-3xl hover:text-black transition"></i>
+      </a>
+    </div>
+    
+<!-- Copyright -->
+    <p class="text-gray-500 text-sm text-center mt-12 mb-5">
+      &copy; 2025 Jedison Company, Ltd. All rights reserved.
+    </p>
+  </div>
+</footer>

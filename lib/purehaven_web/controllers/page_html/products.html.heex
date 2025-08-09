@@ -1,0 +1,647 @@
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  rel="stylesheet"
+/>
+
+<header 
+  x-data="{ scrolled: false }"
+  x-init="window.addEventListener('scroll', () => scrolled = window.scrollY > 50)"
+  x-bind:class="scrolled ? 'bg-white shadow py-4' : 'bg-transparent py-6'"
+  class="fixed inset-x-0 top-0 z-50 transition-all duration-300"
+>
+  <nav class="flex items-center justify-between px-4 lg:px-8 transition-all duration-300" aria-label="Global">
+    <!-- Logo -->
+    <div class="flex">
+      <a href={~p"/home"} class="-m-1.5 p-1.5">
+        <span class="sr-only">Jedison Ltd</span>
+        <img class="h-10 w-auto transition-all duration-300" x-bind:class="scrolled ? 'h-12' : 'h-16'" src={~s(/images/jedisonlogo.png)} alt="Jedison Logo" />
+      </a>
+    </div>
+
+    <!-- Desktop Nav -->
+    <div class="hidden lg:flex flex-grow justify-center gap-x-8">
+      <a href={~p"/home"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+        <i class="fas fa-home"></i> Home
+      </a>
+      <!-- Products Dropdown -->
+      <div class="relative group">
+        <a href={~p"/products"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+          <i class="fas fa-box"></i> Products
+          <i class="fas fa-chevron-down text-xs transition-transform duration-300 group-hover:rotate-180"></i>
+        </a>
+        <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 group-hover:opacity-100 group-hover:translate-y-1 transition duration-300 transform z-50">
+          <a href={~p"/products"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">PureHaven</a>
+          <a href={~p"/products/new-products"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">New Products</a>
+          <a href={~p"/products/private-label"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Private/Custom Labelling</a>
+        </div>
+      </div>
+      <a href={~p"/aboutus"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+        <i class="fas fa-users"></i> About Us
+      </a>
+      <a href={~p"/contactus"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+        <i class="fas fa-envelope"></i> Contact Us
+      </a>
+      <a href={~p"/faqs"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+        <i class="fas fa-question-circle"></i> FAQs
+      </a>
+      <%!-- <a href={~p"/reviews"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+        <i class="fas fa-star"></i> Reviews
+      </a> --%>
+    </div>
+
+    <!-- Mobile Menu Button -->
+    <button
+      id="menu-button"
+      phx-click={JS.show(to: "#mobile-menu")}
+      class="lg:hidden block text-gray-700 focus:outline-none"
+    >
+      <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      </svg>
+    </button>
+  </nav>
+</header>
+
+<!-- Mobile Sidebar Menu -->
+<div
+  id="mobile-menu"
+  class="hidden fixed inset-0 z-50 w-64 h-full bg-indigo-600 text-white transform transition-transform"
+>
+  <button
+    id="close-menu"
+    phx-click={JS.hide(to: "#mobile-menu")}
+    class="absolute top-4 right-4 text-white text-xl"
+  >
+    &times;
+  </button>
+  <ul class="mt-10 space-y-4 relative z-10"> <!-- Updated z-index for the main menu -->
+    <li>
+      <a href={~p"/home"} class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700">
+        <i class="fas fa-home"></i>
+        Home
+      </a>
+    </li>
+
+    <!-- Products Dropdown for Mobile -->
+    <li class="relative group">
+      <button class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700 w-full text-left">
+        <i class="fas fa-box"></i> Products
+        <i class="fas fa-chevron-right text-xs transition-transform duration-300 group-hover:rotate-90"></i>
+      </button>
+      <ul class="absolute top-0 right-0 w-48 bg-white rounded-md shadow-lg opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition duration-300 transform z-10"> <!-- Positioning to the right -->
+        <li>
+          <a href={~p"/products#purehaven"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">PureHaven</a>
+        </li>
+        <li>
+          <a href={~p"/products/new-products"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">New Products</a>
+        </li>
+        <li>
+          <a href={~p"/products/private-label"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Private/Custom Labelling</a>
+        </li>
+      </ul>
+    </li>
+
+    <li>
+      <a href={~p"/aboutus"} class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700">
+        <i class="fas fa-users"></i>
+        About Us
+      </a>
+    </li>
+    <li>
+      <a href={~p"/contactus"} class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700">
+        <i class="fas fa-envelope"></i>
+        Contact Us
+      </a>
+    </li>
+    <li>
+      <a href={~p"/faqs"} class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700">
+        <i class="fas fa-question-circle"></i>
+        FAQs
+      </a>
+    </li>
+    <%!-- <li>
+      <a href={~p"/reviews"} class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700">
+        <i class="fas fa-star"></i>
+        Reviews
+      </a>
+    </li> --%>
+  </ul>
+</div>
+
+<section class="bg-gray-100 py-16" x-data="{ activeModal: null }">
+  <div class="max-w-6xl mx-auto px-6 mt-10">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl md:text-4xl font-bold text-gray-900">Our Essential Products</h2>
+      <p class="text-gray-600 mt-2 text-lg">Discover our range of hygiene and household products.</p>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+
+      <%!-- <!-- Sanitary Towels -->
+      <div @click="activeModal = 1" class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 hover:bg-gray-100 transition-transform duration-300 cursor-pointer">
+        <img src="/images/jedisonsanitarytowels.png" alt="Sanitary Towels" class="w-full h-60 object-cover" />
+        <div class="p-6">
+          <h3 class="text-xl font-semibold text-gray-900">Sanitary Towels</h3>
+          <p class="text-gray-600 mt-2">Ultra-absorbent and comfortable pads for maximum protection.</p>
+          <p class="text-gray-500 mt-2 italic">Available in multiple sizes</p>
+          
+        </div>
+      </div> --%>
+
+      <!-- Toilet Rolls -->
+      <div @click="activeModal = 2" class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 hover:bg-gray-100 transition-transform duration-300 cursor-pointer">
+        <img src="/images/Jedison4rolls.png" alt="Toilet Rolls" class="w-full h-60 object-cover" />
+        <div class="p-6">
+          <h3 class="text-xl font-semibold text-gray-900">Toilet Rolls</h3>
+          <p class="text-gray-600 mt-2">Soft, strong, and biodegradable tissue for everyday use.</p>
+          <p class="text-gray-500 mt-2 italic">Available in multiple packs </p>
+        </div>
+      </div>
+
+      <!-- Serviettes -->
+      <div @click="activeModal = 3" class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 hover:bg-gray-100 transition-transform duration-300 cursor-pointer">
+        <img src="/images/Jedisonserviettes.png" alt="Serviettes" class="w-full h-60 object-cover" />
+        <div class="p-6">
+          <h3 class="text-xl font-semibold text-gray-900">Serviettes</h3>
+          <p class="text-gray-600 mt-2">Premium soft serviettes for home, office, or events.</p>
+          <p class="text-gray-500 mt-2 italic">Available in various sizes</p>
+        </div>
+      </div>
+
+      <!-- Kitchen Towels -->
+      <div @click="activeModal = 4" class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 hover:bg-gray-100 transition-transform duration-300 cursor-pointer">
+        <img src="/images/Jedisonkitchtowels.png" alt="Kitchen Towels" class="w-full h-60 object-cover" />
+        <div class="p-6">
+          <h3 class="text-xl font-semibold text-gray-900">Kitchen Towels</h3>
+          <p class="text-gray-600 mt-2">Highly absorbent and durable for everyday kitchen use.</p>        
+          <p class="text-gray-500 mt-2 italic">Available in multiple rolls & sheets</p>
+        </div>
+      </div>
+
+      <!-- Aluminum Foils -->
+      <div @click="activeModal = 5" class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 hover:bg-gray-100 transition-transform duration-300 cursor-pointer">
+        <img src="/images/Jedisonfoil.png" alt="Aluminum Foils" class="w-full h-60 object-cover" />
+        <div class="p-6">
+          <h3 class="text-xl font-semibold text-gray-900">Aluminum Foils</h3>
+          <p class="text-gray-600 mt-2">High-quality foil for cooking, baking, and storage.</p>          
+          <p class="text-gray-500 mt-2 italic">Heat-resistant and food-safe</p>
+        </div>
+      </div>
+
+      <!-- Cling Films -->
+      <div @click="activeModal = 6" class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 hover:bg-gray-100 transition-transform duration-300 cursor-pointer">
+        <img src="/images/Jedisoncling.png" alt="Cling Films" class="w-full h-60 object-cover" />
+        <div class="p-6">
+          <h3 class="text-xl font-semibold text-gray-900">Cling Films</h3>
+          <p class="text-gray-600 mt-2">Stretchable and airtight wrap to keep food fresh.</p>         
+          <p class="text-gray-500 mt-2 italic">Available in various lengths</p>
+        </div>
+      </div>
+
+      <%!-- <!-- Diapers -->
+      <div @click="activeModal = 7" class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 hover:bg-gray-100 transition-transform duration-300 cursor-pointer">
+        <img src="/images/diapers.jpg" alt="Diapers" class="w-full h-60 object-cover" />
+        <div class="p-6">
+          <h3 class="text-xl font-semibold text-gray-900">Diapers</h3>
+          <p class="text-gray-600 mt-2">Super absorbent and leak-proof diapers for babies.</p>         
+          <p class="text-gray-500 mt-2 italic">Available in all sizes</p>
+        </div>
+      </div> --%>
+
+      <!-- Wet Wipes -->
+      <div @click="activeModal = 8" class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 hover:bg-gray-100 transition-transform duration-300 cursor-pointer">
+        <img src="/images/jedisonwetwipes2.png" alt="Wet Wipes" class="w-full h-60 object-cover" />
+        <div class="p-6">
+          <h3 class="text-xl font-semibold text-gray-900">Wet Wipes</h3>
+          <p class="text-gray-600 mt-2">Soft, refreshing, and perfect for quick cleaning.</p>          
+          <p class="text-gray-500 mt-2 italic">Gentle on skin, tough on dirt</p>
+        </div>
+      </div>
+
+      <%!-- <!-- Facial Tissues -->
+      <div @click="activeModal = 9" class="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-xl hover:scale-105 hover:bg-gray-100 transition-transform duration-300 cursor-pointer">
+        <img src="/images/Jedisonfacialtissue.png" alt="Facial Tissues" class="w-full h-60 object-cover" />
+        <div class="p-6">
+          <h3 class="text-xl font-semibold text-gray-900">Facial Tissues</h3>
+          <p class="text-gray-600 mt-2">Soft, gentle tissues perfect for everyday use and skincare.</p>   
+         <p class="text-gray-500 mt-2 italic">Dermatologically tested & ultra-absorbent</p>
+        </div>
+      </div> --%>
+    </div>
+
+ <!-- Sanitary Towels Modal -->
+<div x-show="activeModal === 1" @click.self="activeModal = null"class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-6" x-cloak>
+  <div class="bg-white rounded-lg max-w-4xl w-full p-6 relative overflow-y-auto max-h-[80vh]">
+    <button @click="activeModal = null" class="absolute top-2 right-2 text-gray-600 hover:text-black text-2xl">&times;</button>
+    <h2 class="text-2xl font-semibold mb-6">Sanitary Towels Variations</h2>
+
+    <div class="space-y-12 relative">
+      <!-- Pack 1 -->
+      <div class="relative min-h-[140px]">
+        <img src="/images/jedisonsanitarytowels.png" alt="Sanitary Towels Pack 1" class="absolute left-0 top-0 w-52 h-auto object-cover rounded" />
+        <div class="pl-[52%]">
+          <h4 class="text-xl font-semibold">Pack 1</h4>
+          <p class="text-base italic text-gray-700">Ultra-soft, breathable, and perfect for light flow days.</p>
+          <p class="text-base italic text-gray-700">Discreet packaging ideal for travel.</p>
+        </div>
+      </div>
+
+      <hr class="border-t border-gray-300 my-6" />
+
+      <!-- Pack 2 -->
+      <div class="relative min-h-[140px]">
+        <img src="/images/jedisonsanitarytowels.png" alt="Sanitary Towels Pack 2" class="absolute left-0 top-0 w-52 h-auto object-cover rounded" />
+        <div class="pl-[52%]">
+          <h4 class="text-xl font-semibold">Pack 2</h4>
+          <p class="text-base italic text-gray-700">Extra-absorbent with wings for better protection.</p>
+          <p class="text-base italic text-gray-700">Designed for overnight comfort and safety.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+ <!-- Toilet Rolls Modal -->
+  <div x-show="activeModal === 2" @click.self="activeModal = null" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-6" x-cloak>
+    <div class="bg-white rounded-lg max-w-4xl w-full p-6 relative overflow-y-auto max-h-[80vh]">
+      <button @click="activeModal = null" class="absolute top-2 right-2 text-gray-600 hover:text-black text-2xl">&times;</button>
+      <h2 class="text-2xl font-semibold mb-6">Toilet Rolls Variations</h2>
+
+      <div class="space-y-10 relative">
+        <div class="relative min-h-[120px]">
+          <img src="/images/jed2rolls.jpg" alt="Toilet Rolls Pack 1" class="absolute left-0 top-0 w-40 h-auto object-cover rounded" />
+          <div class="pl-[50%]">
+            <h4 class="text-lg font-medium">2 Rolls Pack</h4>
+            <p class="text-sm italic text-gray-600">2-ply rolls offering comfort and durability.</p>
+            <p class="text-sm italic text-gray-600">Soft touch with reliable strength.</p>
+          </div>
+        </div>
+        <hr class="border-t border-gray-300 my-4" />
+        <div class="relative min-h-[120px]">
+          <img src="/images/Jedison4rolls.png" alt="Toilet Rolls Pack 2" class="absolute left-0 top-0 w-40 h-auto object-cover rounded" />
+          <div class="pl-[50%]">
+            <h4 class="text-lg font-medium">4 Rolls Pack</h4>
+            <p class="text-sm italic text-gray-600">Ideal for small households.</p>
+            <p class="text-sm italic text-gray-600">Compact, easy to store, and perfect for light daily use.</p>
+          </div>
+        </div>
+         <hr class="border-t border-gray-300 my-4" />
+        <div class="relative min-h-[120px]">
+          <img src="/images/8packrolls.png" alt="Toilet Rolls Pack 2" class="absolute left-0 top-0 w-40 h-auto object-cover rounded" />
+          <div class="pl-[50%]">
+            <h4 class="text-lg font-medium">8 Rolls Pack</h4>
+            <p class="text-sm italic text-gray-600">Balanced for medium use.</p>
+            <p class="text-sm italic text-gray-600">Great value for small to medium families; fewer restocks needed.</p>
+          </div>
+        </div>
+         <hr class="border-t border-gray-300 my-4" />
+        <div class="relative min-h-[120px]">
+          <img src="/images/10packrolls.png" alt="Toilet Rolls Pack 2" class="absolute left-0 top-0 w-40 h-auto object-cover rounded" />
+          <div class="pl-[50%]">
+            <h4 class="text-lg font-medium">10 Rolls Pack</h4>
+            <p class="text-sm italic text-gray-600">High value & convenience.</p>
+            <p class="text-sm italic text-gray-600">Perfect for larger households or bulk buyers seeking savings.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+<!-- Serviettes Modal -->
+<div x-show="activeModal === 3" @click.self="activeModal = null" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-6" x-cloak>
+  <div class="bg-white rounded-lg max-w-4xl w-full p-6 relative overflow-y-auto max-h-[80vh]">
+    <button @click="activeModal = null" class="absolute top-2 right-2 text-gray-600 hover:text-black text-2xl">&times;</button>
+    <h2 class="text-2xl font-semibold mb-6">Serviettes Variations</h2>
+
+    <div class="space-y-10 relative">
+      <div class="relative min-h-[120px]">
+        <img src="/images/Jedisonserviettes.png" alt="Serviettes Pack 1" class="absolute left-0 top-0 w-40 h-auto object-cover rounded" />
+        <div class="pl-[50%]">
+          <h4 class="text-lg font-medium">100 Serviettes Pack</h4>
+          <p class="text-sm italic text-gray-600">Soft and durable for everyday meals.</p>
+          <p class="text-sm italic text-gray-600">Eco-friendly paper, ideal for families.</p>
+        </div>
+      </div>
+      <hr class="border-t border-gray-300 my-4" />
+      <div class="relative min-h-[120px]">
+        <img src="/images/ValuePackServiettes.png" alt="Serviettes Pack 2" class="absolute left-0 top-0 w-40 h-auto object-cover rounded" />
+        <div class="pl-[50%]">
+          <h4 class="text-lg font-medium">200 Serviettes Pack</h4>
+          <p class="text-sm italic text-gray-600">Premium embossed for elegant occasions.</p>
+          <p class="text-sm italic text-gray-600">Perfect for catering and dinner events.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Kitchen Towels Modal -->
+<div x-show="activeModal === 4" @click.self="activeModal = null" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-6" x-cloak>
+  <div class="bg-white rounded-lg max-w-4xl w-full p-6 relative overflow-y-auto max-h-[80vh]">
+    <button @click="activeModal = null" class="absolute top-2 right-2 text-gray-600 hover:text-black text-2xl">&times;</button>
+    <h2 class="text-2xl font-semibold mb-6">Kitchen Towels Variations</h2>
+
+    <div class="space-y-10 relative">
+      <div class="relative min-h-[120px]">
+        <img src="/images/jedisonsanitarytowels.png" alt="Kitchen Towels Pack 1" class="absolute left-0 top-0 w-40 h-auto object-cover rounded" />
+        <div class="pl-[50%]">
+          <h4 class="text-lg font-medium">Single Pack Kitchen Towel</h4>
+          <p class="text-sm italic text-gray-600">2-ply sheets for quick absorption.</p>
+          <p class="text-sm italic text-gray-600">Perfect for cleaning spills and surfaces.</p>
+        </div>
+      </div>
+      <hr class="border-t border-gray-300 my-4" />
+      <div class="relative min-h-[120px]">
+        <img src="/images/KitchenTowel2pack.png" alt="Kitchen Towels Pack 2" class="absolute left-0 top-0 w-40 h-auto object-cover rounded" />
+        <div class="pl-[50%]">
+          <h4 class="text-lg font-medium">Double Pack Kitchen Towels</h4>
+          <p class="text-sm italic text-gray-600">Heavy-duty rolls for industrial use.</p>
+          <p class="text-sm italic text-gray-600">Highly absorbent and long-lasting.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Aluminium Foils Modal -->
+<div x-show="activeModal === 5" @click.self="activeModal = null" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-6" x-cloak>
+  <div class="bg-white rounded-lg max-w-4xl w-full p-6 relative overflow-y-auto max-h-[80vh]">
+    <button @click="activeModal = null" class="absolute top-2 right-2 text-gray-600 hover:text-black text-2xl">&times;</button>
+    <h2 class="text-2xl font-semibold mb-6">Aluminium Foils Variations</h2>
+
+    <div class="space-y-10 relative">
+      <div class="relative min-h-[120px]">
+        <img src="/images/Jedisonfoil.png" alt="Aluminium Foil Pack 1" class="absolute left-0 top-0 w-40 h-auto object-cover rounded" />
+        <div class="pl-[50%]">
+          <h4 class="text-lg font-medium">Pack 1</h4>
+          <p class="text-sm italic text-gray-600">Standard strength for everyday kitchen use.</p>
+          <p class="text-sm italic text-gray-600">Ideal for wrapping and baking.</p>
+        </div>
+      </div>
+      <hr class="border-t border-gray-300 my-4" />
+      <div class="relative min-h-[120px]">
+        <img src="/images/Jedisonfoil.png" alt="Aluminium Foil Pack 2" class="absolute left-0 top-0 w-40 h-auto object-cover rounded" />
+        <div class="pl-[50%]">
+          <h4 class="text-lg font-medium">Pack 2</h4>
+          <p class="text-sm italic text-gray-600">Heavy-duty roll for grill and oven use.</p>
+          <p class="text-sm italic text-gray-600">High heat resistance and easy to cut.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Cling Films Modal -->
+<div x-show="activeModal === 6" @click.self="activeModal = null" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-6" x-cloak>
+  <div class="bg-white rounded-lg max-w-4xl w-full p-6 relative overflow-y-auto max-h-[80vh]">
+    <button @click="activeModal = null" class="absolute top-2 right-2 text-gray-600 hover:text-black text-2xl">&times;</button>
+    <h2 class="text-2xl font-semibold mb-6">Cling Films Variations</h2>
+
+    <div class="space-y-10 relative">
+      <div class="relative min-h-[120px]">
+        <img src="/images/Jedisoncling.png" alt="Cling Film Pack 1" class="absolute left-0 top-0 w-40 h-auto object-cover rounded" />
+        <div class="pl-[50%]">
+          <h4 class="text-lg font-medium">Pack 1</h4>
+          <p class="text-sm italic text-gray-600">Standard kitchen wrap for everyday use.</p>
+          <p class="text-sm italic text-gray-600">Easy to tear and tightly seals food.</p>
+        </div>
+      </div>
+      <hr class="border-t border-gray-300 my-4" />
+      <div class="relative min-h-[120px]">
+        <img src="/images/Jedisoncling.png" alt="Cling Film Pack 2" class="absolute left-0 top-0 w-40 h-auto object-cover rounded" />
+        <div class="pl-[50%]">
+          <h4 class="text-lg font-medium">Pack 2</h4>
+          <p class="text-sm italic text-gray-600">Industrial-grade wrap for bulk packaging.</p>
+          <p class="text-sm italic text-gray-600">Tough, stretchable, and food-safe.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Diapers Modal -->
+<div x-show="activeModal === 7" @click.self="activeModal = null" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-6" x-cloak>
+  <div class="bg-white rounded-lg max-w-4xl w-full p-6 relative overflow-y-auto max-h-[80vh]">
+    <button @click="activeModal = null" class="absolute top-2 right-2 text-gray-600 hover:text-black text-2xl">&times;</button>
+    <h2 class="text-2xl font-semibold mb-6">Diapers Variations</h2>
+
+    <div class="space-y-10 relative">
+      <div class="relative min-h-[120px]">
+        <img src="/images/jedisonsanitarytowels.png" alt="Diapers Pack 1" class="absolute left-0 top-0 w-40 h-auto object-cover rounded" />
+        <div class="pl-[50%]">
+          <h4 class="text-lg font-medium">Infant Pack</h4>
+          <p class="text-sm italic text-gray-600">Super absorbent core for overnight dryness.</p>
+          <p class="text-sm italic text-gray-600">Soft and breathable for baby's comfort.</p>
+        </div>
+      </div>
+      <hr class="border-t border-gray-300 my-4" />
+      <div class="relative min-h-[120px]">
+        <img src="/images/jedisonsanitarytowels.png" alt="Diapers Pack 2" class="absolute left-0 top-0 w-40 h-auto object-cover rounded" />
+        <div class="pl-[50%]">
+          <h4 class="text-lg font-medium">Toddler Pack</h4>
+          <p class="text-sm italic text-gray-600">Leak-guard system and stretchy waistband.</p>
+          <p class="text-sm italic text-gray-600">Active fit for daytime use.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Wet Wipes Modal -->
+<div x-show="activeModal === 8" @click.self="activeModal = null" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-6" x-cloak>
+  <div class="bg-white rounded-lg max-w-4xl w-full p-6 relative overflow-y-auto max-h-[80vh]">
+    <button @click="activeModal = null" class="absolute top-2 right-2 text-gray-600 hover:text-black text-2xl">&times;</button>
+    <h2 class="text-2xl font-semibold mb-6">Wet Wipes Variations</h2>
+
+    <div class="space-y-10 relative">
+      <div class="relative min-h-[120px]">
+        <img src="/images/jedisonwetwipes2.png" alt="Wet Wipes Pack 1" class="absolute left-0 top-0 w-40 h-auto object-cover rounded" />
+        <div class="pl-[50%]">
+          <h4 class="text-lg font-medium">Baby Wipes</h4>
+          <p class="text-sm italic text-gray-600">Mild, alcohol-free and gentle for babies.</p>
+          <p class="text-sm italic text-gray-600">Infused with aloe and chamomile.</p>
+        </div>
+      </div>
+      <hr class="border-t border-gray-300 my-4" />
+      <div class="relative min-h-[120px]">
+        <img src="/images/jedisonwetwipes.png" alt="Wet Wipes Pack 2" class="absolute left-0 top-0 w-40 h-auto object-cover rounded" />
+        <div class="pl-[50%]">
+          <h4 class="text-lg font-medium">Antibacterial Wipes</h4>
+          <p class="text-sm italic text-gray-600">Kills 99.9% of germs on skin and surfaces.</p>
+          <p class="text-sm italic text-gray-600">Convenient for travel and daily use.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Facial Tissues Modal -->
+<div x-show="activeModal === 9" @click.self="activeModal = null" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 px-6" x-cloak>
+  <div class="bg-white rounded-lg max-w-4xl w-full p-6 relative overflow-y-auto max-h-[80vh]">
+    <button @click="activeModal = null" class="absolute top-2 right-2 text-gray-600 hover:text-black text-2xl">&times;</button>
+    <h2 class="text-2xl font-semibold mb-6">Facial Tissues Variations</h2>
+
+    <div class="space-y-10 relative">
+      <div class="relative min-h-[120px]">
+        <img src="/images/jedisonsanitarytowels.png" alt="Facial Tissues Pack 1" class="absolute left-0 top-0 w-40 h-auto object-cover rounded" />
+        <div class="pl-[50%]">
+          <h4 class="text-lg font-medium">Soft Touch</h4>
+          <p class="text-sm italic text-gray-600">Delicately soft and gentle on skin.</p>
+          <p class="text-sm italic text-gray-600">Perfect for facial use and colds.</p>
+        </div>
+      </div>
+      <hr class="border-t border-gray-300 my-4" />
+      <div class="relative min-h-[120px]">
+        <img src="/images/jedisonsanitarytowels.png" alt="Facial Tissues Pack 2" class="absolute left-0 top-0 w-40 h-auto object-cover rounded" />
+        <div class="pl-[50%]">
+          <h4 class="text-lg font-medium">Ultra Box</h4>
+          <p class="text-sm italic text-gray-600">Boxed for convenience and elegance.</p>
+          <p class="text-sm italic text-gray-600">Highly absorbent and fragrance-free.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    <!-- Repeat a similar modal for the other products as needed -->
+
+  </div>
+</section>
+
+<style>
+  [x-cloak] { display: none !important; }
+</style>
+
+<div class="w-full">
+  <img src={~s(/images/JedArtboard-2.png)} alt="Artboard Image" class="w-full   shadow-lg" />
+</div>
+<!-- Footer Section -->
+<footer class="w-full bg-white py-10 mt-auto">
+  <div class="max-w-6xl mx-auto px-6">
+    
+<!-- Newsletter Section -->
+<!-- Newsletter Section -->
+<div class="mb-12 pb-8 border-b border-gray-300 w-full mx-auto">
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+    
+    <!-- Left Content -->
+    <div class="md:w-1/2 text-left md:ml-4">
+      <h3 class="text-2xl font-bold text-gray-900">Want product news and updates?</h3>
+      <p class="text-gray-600 mt-2">Sign up for our newsletter.</p>
+    </div>
+
+    <!-- Right Content -->
+    <div class="md:w-1/2 flex justify-end md:mr-4">
+      <div class="w-full max-w-md space-y-3">
+        <!-- Newsletter form -->
+        <form
+          id="newsletter-form"
+          action={~p(/subscribe)}
+          method="post"
+          class="relative space-y-3"
+        >
+          <input type="hidden" name="_csrf_token" value={Phoenix.Controller.get_csrf_token()} />
+
+          <!-- First & Last Name Fields -->
+          <div class="flex space-x-3">
+            <input
+              type="text"
+              name="first_name"
+              placeholder="First name"
+              class="w-1/2 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+            <input
+              type="text"
+              name="last_name"
+              placeholder="Last name"
+              class="w-1/2 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          <!-- Email + Submit Button -->
+          <div class="flex space-x-3">
+            <input
+              type="email"
+              id="newsletter-email"
+              name="email"
+              placeholder="Enter your email"
+              class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+            <button
+              type="submit"
+              class="px-6 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 transition"
+            >
+              Subscribe
+            </button>
+          </div>
+
+          <!-- Message Box -->
+          <div
+            id="newsletter-message"
+            class="absolute top-full mt-2 hidden px-4 py-2 bg-green-100 border border-green-400 text-green-800 rounded shadow-lg w-full"
+          >
+            Your message here (e.g., Success! You have successfully subscribed.)
+          </div>
+        </form>
+
+        <!-- Privacy Policy Text -->
+        <p class="text-gray-500 text-sm mt-2">
+          We care about your data. Read our 
+          <a href="#" class="text-indigo-600 hover:underline">privacy policy</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+    
+<!-- Navigation Links -->
+    <nav class="mb-8">
+      <ul class="flex justify-center space-x-10 text-gray-600 text-sm">
+        <li><a href={~p(/home)} class="hover:underline">Home</a></li>
+        
+        <li><a href={~p(/products)} class="hover:underline">Products</a></li>
+        
+        <li><a href={~p(/aboutus)} class="hover:underline">About Us</a></li>
+        
+        <li><a href={~p(/contactus)} class="hover:underline">Contact Us</a></li>
+        
+        <li><a href={~p(/faqs)} class="hover:underline">FAQs</a></li>
+        
+        <%!-- <li><a href={~p(/reviews)} class="hover:underline">Reviews</a></li> --%>
+      </ul>
+    </nav>
+    
+<!-- Social Media Icons -->
+    <div class="flex justify-center space-x-10 mb-8 text-gray-600">
+      <a href="https://facebook.com" aria-label="Facebook" target="_blank" rel="noopener">
+        <i class="fa-brands fa-facebook text-3xl hover:text-blue-600 transition"></i>
+      </a>
+      
+      <a href="https://www.instagram.com/purehavenafrica?igsh=ZjVhdXNjZWQya2s1" aria-label="Instagram" target="_blank" rel="noopener">
+        <i class="fa-brands fa-instagram text-3xl hover:text-pink-600 transition"></i>
+      </a>
+      
+      <a href="https://whatsapp.com" aria-label="WhatsApp" target="_blank" rel="noopener">
+        <i class="fa-brands fa-whatsapp text-3xl hover:text-green-600 transition"></i>
+      </a>
+      
+      <%!-- <a href="https://twitter.com" aria-label="Twitter" target="_blank" rel="noopener">
+        <i class="fa-brands fa-x text-3xl hover:text-blue-400 transition"></i>
+      </a> --%>
+      
+      <a href="https://tiktok.com" aria-label="TikTok" target="_blank" rel="noopener">
+        <i class="fa-brands fa-tiktok text-3xl hover:text-black transition"></i>
+      </a>
+    </div>
+    
+<!-- Copyright -->
+    <p class="text-gray-500 text-sm text-center mt-12 mb-5">
+      &copy; 2025 Jedison Company, Ltd. All rights reserved.
+    </p>
+  </div>
+</footer>

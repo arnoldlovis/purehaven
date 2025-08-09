@@ -1,0 +1,325 @@
+<link
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+  rel="stylesheet"
+/>
+<!-- Header -->
+<!-- Header -->
+<header 
+  x-data="{ scrolled: false }"
+  x-init="window.addEventListener('scroll', () => scrolled = window.scrollY > 50)"
+  x-bind:class="scrolled ? 'bg-white shadow py-4' : 'bg-transparent py-6'"
+  class="fixed inset-x-0 top-0 z-50 transition-all duration-300"
+>
+  <nav class="flex items-center justify-between px-4 lg:px-8 transition-all duration-300" aria-label="Global">
+    <!-- Logo -->
+    <div class="flex">
+      <a href={~p"/home"} class="-m-1.5 p-1.5">
+        <span class="sr-only">Jedison Ltd</span>
+        <img class="h-10 w-auto transition-all duration-300" x-bind:class="scrolled ? 'h-12' : 'h-16'" src={~s(/images/jedisonlogo.png)} alt="Jedison Logo" />
+      </a>
+    </div>
+
+   <!-- Desktop Nav -->
+<div class="hidden lg:flex flex-grow justify-center gap-x-8">
+  <a href={~p"/home"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+    <i class="fas fa-home"></i> Home
+  </a>
+
+  <!-- Products Dropdown -->
+  <div class="relative group">
+    <a href={~p"/products"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+      <i class="fas fa-box"></i> Products
+      <!-- Arrow Icon -->
+      <i class="fas fa-chevron-down text-xs transition-transform duration-300 group-hover:rotate-180"></i>
+    </a>
+    <!-- Dropdown Menu -->
+    <div class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg opacity-0 group-hover:opacity-100 group-hover:translate-y-1 transition duration-300 transform z-50">
+      <a href={~p"/products"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">PureHaven</a>
+      <a href={~p"/products/new-products"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">New Products</a>
+      <a href={~p"/products/private-label"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Private/Custom Labelling</a>
+    </div>
+  </div>
+
+  <a href={~p"/aboutus"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+    <i class="fas fa-users"></i> About Us
+  </a>
+  <a href={~p"/contactus"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+    <i class="fas fa-envelope"></i> Contact Us
+  </a>
+  <a href={~p"/faqs"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+    <i class="fas fa-question-circle"></i> FAQs
+  </a>
+  <%!-- <a href={~p"/reviews"} class="flex items-center gap-2 text-sm font-semibold text-gray-900 hover:text-indigo-600 transition">
+    <i class="fas fa-star"></i> Reviews
+  </a> --%>
+</div>
+
+    <!-- Mobile Menu Button -->
+    <button
+      id="menu-button"
+      phx-click={JS.show(to: "#mobile-menu")}
+      class="lg:hidden block text-gray-700 focus:outline-none"
+    >
+      <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+      </svg>
+    </button>
+  </nav>
+</header>
+
+<!-- Mobile Sidebar Menu -->
+<div
+  id="mobile-menu"
+  class="hidden fixed inset-0 z-50 w-64 h-full bg-indigo-600 text-white transform transition-transform"
+>
+  <button
+    id="close-menu"
+    phx-click={JS.hide(to: "#mobile-menu")}
+    class="absolute top-4 right-4 text-white text-xl"
+  >
+    &times;
+  </button>
+  <ul class="mt-10 space-y-4 relative z-10"> <!-- Updated z-index for the main menu -->
+    <li>
+      <a href={~p"/home"} class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700">
+        <i class="fas fa-home"></i>
+        Home
+      </a>
+    </li>
+
+    <!-- Products Dropdown for Mobile -->
+    <li class="relative group">
+      <button class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700 w-full text-left">
+        <i class="fas fa-box"></i> Products
+        <i class="fas fa-chevron-right text-xs transition-transform duration-300 group-hover:rotate-90"></i>
+      </button>
+      <ul class="absolute top-0 right-0 w-48 bg-white rounded-md shadow-lg opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition duration-300 transform z-10"> <!-- Positioning to the right -->
+        <li>
+          <a href={~p"/products#purehaven"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">PureHaven</a>
+        </li>
+        <li>
+          <a href={~p"/products/new-products"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">New Products</a>
+        </li>
+        <li>
+          <a href={~p"/products/private-label"} class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Private/Custom Labelling</a>
+        </li>
+      </ul>
+    </li>
+
+    <li>
+      <a href={~p"/aboutus"} class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700">
+        <i class="fas fa-users"></i>
+        About Us
+      </a>
+    </li>
+    <li>
+      <a href={~p"/contactus"} class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700">
+        <i class="fas fa-envelope"></i>
+        Contact Us
+      </a>
+    </li>
+    <li>
+      <a href={~p"/faqs"} class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700">
+        <i class="fas fa-question-circle"></i>
+        FAQs
+      </a>
+    </li>
+    <%!-- <li>
+      <a href={~p"/reviews"} class="flex items-center gap-2 py-2 px-4 hover:bg-indigo-700">
+        <i class="fas fa-star"></i>
+        Reviews
+      </a>
+    </li> --%>
+  </ul>
+</div>
+
+<section class="bg-gray-100 py-24 px-6 sm:px-12 lg:px-32">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-5xl font-extrabold text-indigo-800 mb-10 text-center">Private & Custom Labelling Solutions</h2>
+
+    <p class="text-lg text-gray-700 leading-relaxed mb-10 text-center max-w-3xl mx-auto">
+      At <strong>PureHaven</strong>, we empower you to bring your own brand to life with custom labelling solutions across our full product range. Whether you're a growing startup or an established distributor, we simplify the path to market-ready products — no factory required.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
+      <div>
+        <h3 class="text-2xl font-semibold text-indigo-700 mb-4">What We Offer</h3>
+        <ul class="space-y-3 text-gray-700 list-disc list-inside">
+          <li>Customized labels, packaging, and formulations</li>
+          <li>Low minimum order quantities</li>
+          <li>In-house design and branding support</li>
+          <li>Regulatory compliance and certification</li>
+          <li>Barcode setup and retail readiness</li>
+        </ul>
+      </div>
+
+      <div>
+        <h3 class="text-2xl font-semibold text-indigo-700 mb-4">Products You Can Brand</h3>
+        <ul class="space-y-3 text-gray-700 list-disc list-inside">
+          <li>Sanitary Towels & Diapers</li>
+          <li>Toilet Rolls & Facial Tissues</li>
+          <li>Serviettes, Kitchen Towels & Wipes</li>
+          <li>Cling Films, Aluminium Foils and more</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="mb-20">
+      <h3 class="text-2xl font-semibold text-indigo-700 mb-6 text-center">Visualize Your Brand</h3>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6">
+        <img src="/images/istockphotogroup.jpg" alt="Mockup 1" class="rounded shadow-lg h-75 ">
+        <img src="/images/istockphototp3.jpg" alt="Mockup 2" class="rounded shadow-lg h-75">
+        <img src="/images/istockphotokt1.jpg" alt="Mockup 3" class="rounded shadow-lg h-75">
+        <img src="/images/istockphotoserviettes1.jpg" alt="Mockup 4" class="rounded shadow-lg h-75">
+      </div>
+    </div>
+
+    <div class="mb-16">
+      <h3 class="text-2xl font-semibold text-indigo-700 mb-3">Why Choose Us?</h3>
+      <ul class="list-disc list-inside text-gray-700 space-y-2">
+        <li><strong>Reliable Quality:</strong> Backed by testing and consistent manufacturing.</li>
+        <li><strong>Faster Time to Market:</strong> Local production and quick turnaround.</li>
+        <li><strong>Custom Aesthetic:</strong> Professional packaging tailored to your audience.</li>
+        <li><strong>Hands-on Support:</strong> We guide you through every step.</li>
+        <li><strong>Scalable Supply:</strong> Flexibility to grow with your brand.</li>
+      </ul>
+    </div>
+
+    <div class="bg-indigo-100 p-8 rounded-xl shadow-lg text-center">
+      <h3 class="text-2xl font-semibold text-indigo-800 mb-2">Launch Your Brand with PureHaven</h3>
+      <p class="text-gray-700 mb-4">Let’s collaborate to turn your brand idea into a shelf-ready product line.</p>
+      <a href={~p"/contactus"} class="inline-block bg-indigo-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-indigo-700 transition">
+        Contact Us to Get Started
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer class="w-full bg-white py-10 mt-auto">
+  <div class="max-w-6xl mx-auto px-6">
+    
+<!-- Newsletter Section -->
+<!-- Newsletter Section -->
+<div class="mb-12 pb-8 border-b border-gray-300 w-full mx-auto">
+  <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+    
+    <!-- Left Content -->
+    <div class="md:w-1/2 text-left md:ml-4">
+      <h3 class="text-2xl font-bold text-gray-900">Want product news and updates?</h3>
+      <p class="text-gray-600 mt-2">Sign up for our newsletter.</p>
+    </div>
+
+    <!-- Right Content -->
+    <div class="md:w-1/2 flex justify-end md:mr-4">
+      <div class="w-full max-w-md space-y-3">
+        <!-- Newsletter form -->
+        <form
+          id="newsletter-form"
+          action={~p(/subscribe)}
+          method="post"
+          class="relative space-y-3"
+        >
+          <input type="hidden" name="_csrf_token" value={Phoenix.Controller.get_csrf_token()} />
+
+          <!-- First & Last Name Fields -->
+          <div class="flex space-x-3">
+            <input
+              type="text"
+              name="first_name"
+              placeholder="First name"
+              class="w-1/2 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+            <input
+              type="text"
+              name="last_name"
+              placeholder="Last name"
+              class="w-1/2 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          <!-- Email + Submit Button -->
+          <div class="flex space-x-3">
+            <input
+              type="email"
+              id="newsletter-email"
+              name="email"
+              placeholder="Enter your email"
+              class="flex-1 px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+            <button
+              type="submit"
+              class="px-6 py-2 bg-indigo-600 text-white font-medium rounded-md hover:bg-indigo-700 transition"
+            >
+              Subscribe
+            </button>
+          </div>
+
+          <!-- Message Box -->
+          <div
+            id="newsletter-message"
+            class="absolute top-full mt-2 hidden px-4 py-2 bg-green-100 border border-green-400 text-green-800 rounded shadow-lg w-full"
+          >
+            Your message here (e.g., Success! You have successfully subscribed.)
+          </div>
+        </form>
+
+        <!-- Privacy Policy Text -->
+        <p class="text-gray-500 text-sm mt-2">
+          We care about your data. Read our 
+          <a href="#" class="text-indigo-600 hover:underline">privacy policy</a>.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+    
+<!-- Navigation Links -->
+    <nav class="mb-8">
+      <ul class="flex justify-center space-x-10 text-gray-600 text-sm">
+        <li><a href={~p(/home)} class="hover:underline">Home</a></li>
+        
+        <li><a href={~p(/products)} class="hover:underline">Products</a></li>
+        
+        <li><a href={~p(/aboutus)} class="hover:underline">About Us</a></li>
+        
+        <li><a href={~p(/contactus)} class="hover:underline">Contact Us</a></li>
+        
+        <li><a href={~p(/faqs)} class="hover:underline">FAQs</a></li>
+        
+        <%!-- <li><a href={~p(/reviews)} class="hover:underline">Reviews</a></li> --%>
+      </ul>
+    </nav>
+    
+<!-- Social Media Icons -->
+    <div class="flex justify-center space-x-10 mb-8 text-gray-600">
+      <a href="https://facebook.com" aria-label="Facebook" target="_blank" rel="noopener">
+        <i class="fa-brands fa-facebook text-3xl hover:text-blue-600 transition"></i>
+      </a>
+      
+      <a href="https://www.instagram.com/purehavenafrica?igsh=ZjVhdXNjZWQya2s1" aria-label="Instagram" target="_blank" rel="noopener">
+        <i class="fa-brands fa-instagram text-3xl hover:text-pink-600 transition"></i>
+      </a>
+      
+      <a href="https://whatsapp.com" aria-label="WhatsApp" target="_blank" rel="noopener">
+        <i class="fa-brands fa-whatsapp text-3xl hover:text-green-600 transition"></i>
+      </a>
+      
+      <%!-- <a href="https://twitter.com" aria-label="Twitter" target="_blank" rel="noopener">
+        <i class="fa-brands fa-x text-3xl hover:text-blue-400 transition"></i>
+      </a> --%>
+      
+      <a href="https://tiktok.com" aria-label="TikTok" target="_blank" rel="noopener">
+        <i class="fa-brands fa-tiktok text-3xl hover:text-black transition"></i>
+      </a>
+    </div>
+    
+<!-- Copyright -->
+    <p class="text-gray-500 text-sm text-center mt-12 mb-5">
+      &copy; 2025 Jedison Company, Ltd. All rights reserved.
+    </p>
+  </div>
+</footer>
